@@ -1,292 +1,252 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>ใบเสนอราคารถยนต์</title>
 
-  <title>คำนวณค่างวดรถยนต์</title>
+<style>
+body{
+  font-family: Arial;
+  background:#f4f6f8;
+  padding:20px;
+}
 
-  <style>
+.container{
+  max-width:800px;
+  margin:auto;
+  background:white;
+  padding:25px;
+  border-radius:12px;
+  box-shadow:0 2px 12px rgba(0,0,0,0.1);
+}
 
-    body{
-      font-family: Arial, sans-serif;
-      background:#f4f6f9;
-      margin:0;
-      padding:40px;
-    }
+h2{
+  text-align:center;
+  color:red;
+  font-size:32px;
+  margin-bottom:20px;
+}
 
-    .container{
-      max-width:550px;
-      margin:auto;
-      background:white;
-      padding:30px;
-      border-radius:15px;
-      box-shadow:0 0 15px rgba(0,0,0,0.1);
-    }
+/* layout */
+.form-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin:10px 0;
+  gap:15px;
+}
 
-    h1{
-      text-align:center;
-      color:#d60000;
-      margin-bottom:25px;
-    }
+.label{
+  width:45%;
+  font-weight:bold;
+}
 
-    .form-group{
-      margin-bottom:18px;
-    }
+.field{
+  width:55%;
+}
 
-    label{
-      display:block;
-      margin-bottom:8px;
-      font-weight:bold;
-    }
+input,select{
+  width:100%;
+  padding:8px;
+  border:1px solid #ccc;
+  border-radius:6px;
+}
 
-    input,
-    select{
-      width:100%;
-      padding:12px;
-      border:1px solid #ccc;
-      border-radius:8px;
-      font-size:16px;
-      box-sizing:border-box;
-    }
+.note{
+  font-size:12px;
+  color:#777;
+  margin-top:5px;
+}
 
-    button{
-      width:100%;
-      padding:14px;
-      background:#d60000;
-      color:white;
-      border:none;
-      border-radius:10px;
-      font-size:18px;
-      cursor:pointer;
-      margin-top:10px;
-    }
+button{
+  width:100%;
+  padding:12px;
+  margin-top:12px;
+  border:none;
+  border-radius:8px;
+  font-size:16px;
+  cursor:pointer;
+}
 
-    button:hover{
-      background:#b00000;
-    }
+.btn-calc{
+  background:red;
+  color:white;
+}
 
-    .result{
-      margin-top:25px;
-      background:#f8f8f8;
-      padding:20px;
-      border-radius:10px;
-    }
+.btn-line{
+  background:#06c755;
+  color:white;
+}
 
-    .result p{
-      margin:10px 0;
-      font-size:18px;
-    }
-
-    .highlight{
-      color:#d60000;
-      font-weight:bold;
-      font-size:24px;
-    }
-
-  </style>
+.result{
+  margin-top:20px;
+  background:#fff7e6;
+  padding:15px;
+  border-radius:10px;
+  border:1px solid #ffd08a;
+  white-space:pre-line;
+}
+</style>
 </head>
 
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <h1>คำนวณค่างวดรถยนต์ แบบอัตราปกติ By เซลอาร์ต โตโยต้านนทบุรี สาขาแจ้งวัฒนะ</h1>
+<h2>ใบเสนอราคารถยนต์โตโยต้า</h2>
 
-    <div class="form-group">
-      <label>1. ราคารถยนต์ (บาท)</label>
-      <input type="number" id="carPrice" placeholder="เช่น 945000">
-    </div>
+<div class="form-row">
+  <div class="label">ราคารถยนต์</div>
+  <div class="field"><input type="number" id="price"></div>
+</div>
 
-    <div class="form-group">
-      <label>2. ส่วนลดพิเศษ (บาท)</label>
-      <input type="number" id="discount" placeholder="เช่น 35000">
-    </div>
-
-    <div class="form-group">
-
-      <label>3. เงินดาวน์</label>
-
-      <select id="downType" onchange="toggleDownPayment()">
-        <option value="amount">กรอกเป็นจำนวนเงิน</option>
-        <option value="percent">เลือกเป็นเปอร์เซ็นต์</option>
-      </select>
-
-      <input
-        type="number"
-        id="downPayment"
-        placeholder="เช่น 150000"
-        style="margin-top:10px;"
-      >
-
-      <select
-        id="downPercent"
-        style="display:none; margin-top:10px;"
-      >
-        <option value="5">5%</option>
-        <option value="10">10%</option>
-        <option value="15">15%</option>
-        <option value="20">20%</option>
-      </select>
-
-    </div>
-
-    <div class="form-group">
-      <label>4. จำนวนปีที่ผ่อน</label>
-      <input type="number" id="years" placeholder="เช่น 7">
-    </div>
-
-    <div class="form-group">
-      <label>5. อัตราดอกเบี้ย (%)</label>
-      <input type="number" step="0.01" id="interest" placeholder="เช่น 4.85">
-    </div>
-
-    <button onclick="calculateLoan()">
-      คำนวณค่างวด
-    </button>
-
-    <div class="result" id="result" style="display:none;">
-
-      <p>
-        ราคารถสุทธิ:
-        <strong id="netPrice"></strong> บาท
-      </p>
-
-      <p>
-        เงินดาวน์:
-        <strong id="showDownPayment"></strong> บาท
-      </p>
-
-      <p>
-        ยอดจัดไฟแนนซ์:
-        <strong id="finance"></strong> บาท
-      </p>
-
-      <p>
-        ดอกเบี้ยรวม:
-        <strong id="totalInterest"></strong> บาท
-      </p>
-
-      <p>
-        ยอดชำระทั้งหมด:
-        <strong id="totalPayment"></strong> บาท
-      </p>
-
-      <p class="highlight">
-        ค่างวดต่อเดือน:
-        <span id="monthly"></span> บาท
-      </p>
-
-    </div>
-
+<div class="form-row">
+  <div class="label">ส่วนลดพิเศษ</div>
+  <div class="field">
+    <input type="number" id="discount">
+    <div class="note">ติดต่อเซลอาร์ต เพื่อรับส่วนลดพิเศษเพิ่มเติม</div>
   </div>
+</div>
 
-  <script>
+<div class="form-row">
+  <div class="label">เงินดาวน์</div>
+  <div class="field">
+    <select id="downPercent">
+      <option value="5">5%</option>
+      <option value="10">10%</option>
+      <option value="15">15%</option>
+      <option value="20">20%</option>
+      <option value="25">25%</option>
+    </select>
+  </div>
+</div>
 
-    function formatNumber(num){
-      return new Intl.NumberFormat('th-TH',{
-        maximumFractionDigits:0
-      }).format(num);
-    }
+<div class="form-row">
+  <div class="label">จำนวนปีที่ผ่อน</div>
+  <div class="field"><input type="number" id="year"></div>
+</div>
 
-    function toggleDownPayment(){
+<div class="form-row">
+  <div class="label">อัตราดอกเบี้ย (%)</div>
+  <div class="field">
+    <input type="number" id="interest">
+    <div class="note">ติดต่อเซลอาร์ต เพื่อรับดอกเบี้ยพิเศษ</div>
+  </div>
+</div>
 
-      const type = document.getElementById('downType').value;
+<div class="form-row">
+  <div class="label">รูปแบบการผ่อน</div>
+  <div class="field">
+    <select id="type" onchange="toggleBalloon()">
+      <option value="normal">ทั่วไป</option>
+      <option value="balloon">Balloon</option>
+    </select>
+  </div>
+</div>
 
-      if(type === 'percent'){
+<div class="form-row" id="balloonBox" style="display:none;">
+  <div class="label">Balloon (%)</div>
+  <div class="field">
+    <select id="balloonPercent">
+      <option value="10">10%</option>
+      <option value="20">20%</option>
+      <option value="30">30%</option>
+      <option value="40">40%</option>
+    </select>
+  </div>
+</div>
 
-        document.getElementById('downPayment').style.display = 'none';
-        document.getElementById('downPercent').style.display = 'block';
+<button class="btn-calc" onclick="calculate()">คำนวณใบเสนอราคา</button>
 
-      }else{
+<div class="result" id="result"></div>
 
-        document.getElementById('downPayment').style.display = 'block';
-        document.getElementById('downPercent').style.display = 'none';
+<button class="btn-line" onclick="sendLine()">ส่งเข้า LINE</button>
 
-      }
-    }
+</div>
 
-    function calculateLoan(){
+<script>
 
-      const carPrice =
-        parseFloat(document.getElementById('carPrice').value) || 0;
+/* ========= FORMAT NUMBER ========= */
+function formatNumber(num){
+  return new Intl.NumberFormat('th-TH').format(num);
+}
 
-      const discount =
-        parseFloat(document.getElementById('discount').value) || 0;
+/* ========= GLOBAL ========= */
+let lastMessage="";
 
-      const years =
-        parseFloat(document.getElementById('years').value) || 0;
+/* ========= TOGGLE BALLOON ========= */
+function toggleBalloon(){
+  document.getElementById("balloonBox").style.display =
+  document.getElementById("type").value==="balloon" ? "flex":"none";
+}
 
-      const interest =
-        parseFloat(document.getElementById('interest').value) || 0;
+/* ========= CALCULATE ========= */
+function calculate(){
 
-      const downType =
-        document.getElementById('downType').value;
+let price = +document.getElementById("price").value||0;
+let discount = +document.getElementById("discount").value||0;
+let downPercent = +document.getElementById("downPercent").value||0;
+let year = +document.getElementById("year").value||0;
+let interest = +document.getElementById("interest").value||0;
+let type = document.getElementById("type").value;
+let balloonPercent = +document.getElementById("balloonPercent").value||0;
 
-      // ราคารถหลังหักส่วนลด
-      const netPrice = carPrice - discount;
+let net = price - discount;
+let down = net * (downPercent/100);
+let finance = net - down;
+let months = year * 12;
+let r = interest/100/12;
 
-      let downPayment = 0;
+let monthly=0, balloon=0;
 
-      // ถ้าเลือกดาวน์แบบ %
-      if(downType === 'percent'){
+if(type==="normal"){
+  monthly = (finance*r)/(1-Math.pow(1+r,-months));
+}else{
+  balloon = finance*(balloonPercent/100);
+  let base = finance-balloon;
+  monthly = (base*r)/(1-Math.pow(1+r,-(months-1)));
+}
 
-        const percent =
-          parseFloat(document.getElementById('downPercent').value);
+/* ========= MESSAGE ========= */
+lastMessage =
+`🚗 ใบเสนอราคารถยนต์
 
-        downPayment =
-          netPrice * (percent / 100);
+💰 ราคารถ: ${formatNumber(price)} บาท
+🎯 ส่วนลด: ${formatNumber(discount)} บาท
+📉 ราคาสุทธิ: ${formatNumber(net)} บาท
+💵 เงินดาวน์: ${formatNumber(down)} บาท
+📊 ยอดจัด: ${formatNumber(finance)} บาท
 
-      }else{
+📆 ระยะเวลา: ${year} ปี (${months} เดือน)
+📈 ดอกเบี้ย: ${interest}%
 
-        downPayment =
-          parseFloat(document.getElementById('downPayment').value) || 0;
+💳 ค่างวด: ${formatNumber(monthly)} บาท
+${type==="balloon" ? "🎈 Balloon: "+formatNumber(balloon)+" บาท\n":""}
 
-      }
+📞 เซลอาร์ต โตโยต้านนทบุรี
+☎ 099-416-2110
+LINE: arttoyotanont`;
 
-      // ยอดจัด
-      const finance = netPrice - downPayment;
+document.getElementById("result").innerText = lastMessage;
 
-      // ดอกเบี้ยรวม
-      const totalInterest =
-        finance * (interest / 100) * years;
+}
 
-      // ยอดรวม
-      const totalPayment =
-        finance + totalInterest;
+/* ========= SEND LINE ========= */
+function sendLine(){
 
-      // จำนวนเดือน
-      const months =
-        years * 12;
+if(!lastMessage){
+  alert("กรุณาคำนวณก่อน");
+  return;
+}
 
-      // ค่างวดต่อเดือน
-      const monthly =
-        totalPayment / months;
+let url = "https://social-plugins.line.me/lineit/share?text="
++ encodeURIComponent(lastMessage);
 
-      // แสดงผล
-      document.getElementById('result').style.display = 'block';
+window.open(url,"_blank");
 
-      document.getElementById('netPrice').innerText =
-        formatNumber(netPrice);
+}
 
-      document.getElementById('showDownPayment').innerText =
-        formatNumber(downPayment);
-
-      document.getElementById('finance').innerText =
-        formatNumber(finance);
-
-      document.getElementById('totalInterest').innerText =
-        formatNumber(totalInterest);
-
-      document.getElementById('totalPayment').innerText =
-        formatNumber(totalPayment);
-
-      document.getElementById('monthly').innerText =
-        formatNumber(monthly);
-
-    }
-
-  </script>
+</script>
 
 </body>
 </html>
