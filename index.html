@@ -2,90 +2,348 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>ใบเสนอราคารถยนต์</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>คำนวณดอกเบี้ยรถยนต์ Toyota</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Prompt',sans-serif;
+}
+
 body{
-  font-family: Arial;
-  background:#f4f6f8;
-  padding:20px;
+  background:#f3f4f6;
+  padding:14px;
+  color:#111827;
 }
 
 .container{
-  max-width:800px;
+  max-width:520px;
   margin:auto;
-  background:white;
-  padding:25px;
-  border-radius:12px;
-  box-shadow:0 2px 12px rgba(0,0,0,0.1);
 }
 
-h2{
+.header{
+  background:linear-gradient(135deg,#d50000,#ff3d3d);
+  color:white;
+  border-radius:28px;
+  padding:26px 22px;
   text-align:center;
-  color:red;
-  font-size:32px;
-  margin-bottom:20px;
+  box-shadow:0 15px 35px rgba(213,0,0,0.25);
+  margin-bottom:18px;
 }
 
-/* layout */
-.form-row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin:10px 0;
-  gap:15px;
+.logo{
+  font-size:42px;
+  margin-bottom:10px;
 }
 
-.label{
-  width:45%;
-  font-weight:bold;
+.header h1{
+  font-size:28px;
+  margin-bottom:6px;
 }
 
-.field{
-  width:55%;
+.header p{
+  font-size:14px;
+  opacity:0.95;
 }
 
-input,select{
+.promo{
+  margin-top:16px;
+  background:rgba(255,255,255,0.15);
+  border-radius:18px;
+  padding:12px;
+  font-size:13px;
+  line-height:1.8;
+}
+
+.card{
+  background:white;
+  border-radius:24px;
+  padding:20px;
+  margin-bottom:18px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.08);
+}
+
+.section-title{
+  font-size:20px;
+  font-weight:700;
+  color:#d50000;
+  margin-bottom:16px;
+}
+
+.input-group{
+  margin-bottom:18px;
+}
+
+label{
+  display:block;
+  margin-bottom:8px;
+  font-size:14px;
+  font-weight:500;
+}
+
+input,
+select{
   width:100%;
-  padding:8px;
-  border:1px solid #ccc;
-  border-radius:6px;
+  border:none;
+  background:#f7f7f7;
+  padding:15px;
+  border-radius:16px;
+  font-size:16px;
+  outline:none;
+  border:2px solid transparent;
+}
+
+input:focus,
+select:focus{
+  background:white;
+  border-color:#d50000;
 }
 
 .note{
+  margin-top:6px;
   font-size:12px;
-  color:#777;
-  margin-top:5px;
+  color:#666;
+  line-height:1.5;
 }
 
-button{
-  width:100%;
-  padding:12px;
-  margin-top:12px;
-  border:none;
-  border-radius:8px;
-  font-size:16px;
+.radio-group{
+  display:flex;
+  gap:12px;
+}
+
+.radio-card{
+  flex:1;
+  background:#fafafa;
+  border:2px solid #e5e5e5;
+  border-radius:18px;
+  padding:15px;
+  text-align:center;
+  font-weight:600;
   cursor:pointer;
+  transition:0.2s;
 }
 
-.btn-calc{
-  background:red;
-  color:white;
+.radio-card.active{
+  background:#fff1f1;
+  border-color:#d50000;
+  color:#d50000;
 }
 
-.btn-line{
-  background:#06c755;
+.radio-card input{
+  display:none;
+}
+
+.btn{
+  width:100%;
+  border:none;
+  background:linear-gradient(135deg,#111827,#d50000);
   color:white;
+  padding:18px;
+  border-radius:18px;
+  font-size:18px;
+  font-weight:700;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.btn:hover{
+  transform:translateY(-2px);
 }
 
 .result{
-  margin-top:20px;
-  background:#fff7e6;
-  padding:15px;
-  border-radius:10px;
-  border:1px solid #ffd08a;
-  white-space:pre-line;
+  background:#111827;
+  border-radius:26px;
+  padding:18px;
+  color:white;
+  margin-top:18px;
+  box-shadow:0 12px 30px rgba(0,0,0,0.18);
 }
+
+.result-header{
+  font-size:20px;
+  font-weight:700;
+  margin-bottom:16px;
+}
+
+.summary-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.summary-card{
+  background:rgba(255,255,255,0.06);
+  border-radius:16px;
+  padding:12px;
+}
+
+.summary-card.full{
+  grid-column:1 / -1;
+}
+
+.summary-title{
+  font-size:12px;
+  opacity:0.8;
+  margin-bottom:6px;
+}
+
+.summary-value{
+  font-size:18px;
+  font-weight:700;
+  line-height:1.3;
+}
+
+.summary-value.small{
+  font-size:15px;
+}
+
+.payment-highlight{
+  margin-top:16px;
+  background:linear-gradient(135deg,#d50000,#ff3d3d);
+  border-radius:22px;
+  padding:18px;
+  text-align:center;
+}
+
+.payment-label{
+  font-size:14px;
+  opacity:0.9;
+}
+
+.payment-value{
+  margin-top:8px;
+  font-size:34px;
+  font-weight:700;
+  color:#ffeb3b;
+}
+
+.balloon-box{
+  margin-top:14px;
+  background:#fff3cd;
+  color:#111;
+  border-radius:18px;
+  padding:16px;
+  text-align:center;
+}
+
+.balloon-title{
+  font-size:14px;
+  margin-bottom:6px;
+}
+
+.balloon-value{
+  font-size:28px;
+  font-weight:700;
+  color:#d50000;
+}
+
+.total-box{
+  margin-top:14px;
+  background:rgba(255,255,255,0.08);
+  border-radius:18px;
+  padding:16px;
+  text-align:center;
+}
+
+.total-title{
+  font-size:13px;
+  opacity:0.85;
+}
+
+.total-value{
+  margin-top:8px;
+  font-size:26px;
+  font-weight:700;
+}
+
+.compare-box{
+  background:white;
+  border-radius:24px;
+  padding:20px;
+  margin-top:18px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.08);
+}
+
+.compare-table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:12px;
+}
+
+.compare-table th{
+  background:#d50000;
+  color:white;
+  padding:12px;
+  font-size:13px;
+}
+
+.compare-table td{
+  padding:12px;
+  text-align:center;
+  border-bottom:1px solid #eee;
+  font-size:13px;
+}
+
+.contact{
+  background:white;
+  border-radius:24px;
+  padding:22px;
+  margin-top:18px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.08);
+}
+
+.contact h3{
+  color:#d50000;
+  margin-bottom:12px;
+}
+
+.contact p{
+  margin-bottom:8px;
+  font-size:15px;
+}
+
+.line-btn{
+  display:block;
+  margin-top:16px;
+  background:#06c755;
+  color:white;
+  text-decoration:none;
+  text-align:center;
+  padding:15px;
+  border-radius:16px;
+  font-weight:700;
+}
+
+.footer{
+  text-align:center;
+  margin-top:16px;
+  color:#777;
+  font-size:12px;
+}
+
+.hidden{
+  display:none;
+}
+
+@media(max-width:420px){
+
+  .payment-value{
+    font-size:28px;
+  }
+
+  .summary-value{
+    font-size:16px;
+  }
+
+}
+
 </style>
 </head>
 
@@ -93,156 +351,499 @@ button{
 
 <div class="container">
 
-<h2>ใบเสนอราคารถยนต์โตโยต้า</h2>
+  <div class="header">
 
-<div class="form-row">
-  <div class="label">ราคารถยนต์</div>
-  <div class="field"><input type="number" id="price"></div>
-</div>
+    <div class="logo">🚘</div>
 
-<div class="form-row">
-  <div class="label">ส่วนลดพิเศษ</div>
-  <div class="field">
-    <input type="number" id="discount">
-    <div class="note">ติดต่อเซลอาร์ต เพื่อรับส่วนลดพิเศษเพิ่มเติม</div>
+    <h1>คำนวณดอกเบี้ยรถยนต์</h1>
+
+    <p>
+      เซลล์อาร์ต โตโยต้านนทบุรี สาขาแจ้งวัฒนะ
+    </p>
+
+    <div class="promo">
+      ✅ ฟรีประกันภัยชั้น 1<br>
+      ✅ ฟรีค่าจดทะเบียน<br>
+      ✅ ฟรีฟิล์มกรองแสง<br>
+      ✅ โปรดอกเบี้ยพิเศษ
+    </div>
+
   </div>
-</div>
 
-<div class="form-row">
-  <div class="label">เงินดาวน์</div>
-  <div class="field">
-    <select id="downPercent">
-      <option value="5">5%</option>
-      <option value="10">10%</option>
-      <option value="15">15%</option>
-      <option value="20">20%</option>
-      <option value="25">25%</option>
-    </select>
+  <div class="card">
+
+    <div class="section-title">
+      รายละเอียดรถยนต์
+    </div>
+
+    <div class="input-group">
+      <label>เลือกรุ่นรถ Toyota</label>
+
+      <select id="carModel">
+
+        <option value="">-- กรุณาเลือกรุ่นรถ --</option>
+
+        <option>Yaris</option>
+        <option>Yaris Ativ</option>
+        <option>Corolla Altis</option>
+        <option>Corolla Cross</option>
+        <option>Camry</option>
+        <option>Yaris Cross</option>
+        <option>Raize</option>
+        <option>Fortuner</option>
+        <option>Hilux Revo</option>
+        <option>Hilux Champ</option>
+        <option>Veloz</option>
+        <option>Innova Zenix</option>
+        <option>Commuter</option>
+        <option>Majesty</option>
+        <option>bZ4X</option>
+        <option>GR86</option>
+        <option>GR Corolla</option>
+        <option>GR Supra</option>
+
+      </select>
+    </div>
+
+    <div class="input-group">
+
+      <label>รูปแบบไฟแนนซ์</label>
+
+      <div class="radio-group">
+
+        <label class="radio-card active" id="normalCard">
+          <input type="radio" name="loanType" value="normal" checked>
+          แบบทั่วไป
+        </label>
+
+        <label class="radio-card" id="balloonCard">
+          <input type="radio" name="loanType" value="balloon">
+          แบบ Balloon
+        </label>
+
+      </div>
+
+    </div>
+
+    <div class="input-group">
+
+      <label>ราคารถยนต์ (บาท)</label>
+
+      <input type="number" id="carPrice" placeholder="เช่น 850000">
+
+    </div>
+
+    <div class="input-group hidden" id="balloonSection">
+
+      <label>Balloon (%)</label>
+
+      <select id="balloonPercent">
+        <option value="20">20%</option>
+        <option value="25">25%</option>
+        <option value="30">30%</option>
+        <option value="35">35%</option>
+        <option value="40">40%</option>
+        <option value="45">45%</option>
+        <option value="50">50%</option>
+      </select>
+
+    </div>
+
+    <div class="input-group">
+
+      <label>ส่วนลดพิเศษ</label>
+
+      <input type="number" id="discount" placeholder="เช่น 30000">
+
+      <div class="note">
+        ติดต่อเซลล์อาร์ต เพื่อรับส่วนลดพิเศษเพิ่มเติม
+      </div>
+
+    </div>
+
+    <div class="input-group">
+
+      <label>ประเภทเงินดาวน์</label>
+
+      <select id="downType">
+        <option value="money">กรอกเป็นจำนวนเงิน</option>
+        <option value="percent">กรอกเป็น %</option>
+      </select>
+
+    </div>
+
+    <div class="input-group">
+
+      <label>เงินดาวน์</label>
+
+      <input type="number" id="downPayment" placeholder="เช่น 100000 หรือ 10">
+
+    </div>
+
+    <div class="input-group">
+
+      <label>จำนวนปีที่ผ่อน</label>
+
+      <select id="years">
+        <option value="1">1 ปี</option>
+        <option value="2">2 ปี</option>
+        <option value="3">3 ปี</option>
+        <option value="4">4 ปี</option>
+        <option value="5" selected>5 ปี</option>
+        <option value="6">6 ปี</option>
+        <option value="7">7 ปี</option>
+      </select>
+
+    </div>
+
+    <div class="input-group">
+
+      <label>อัตราดอกเบี้ย (%)</label>
+
+      <input type="number" step="0.01" id="interest" placeholder="เช่น 2.59">
+
+      <div class="note">
+        ติดต่อเซลล์อาร์ต เพื่อรับดอกเบี้ยราคาพิเศษ
+      </div>
+
+    </div>
+
+    <button class="btn" onclick="calculateLoan()">
+      คำนวณค่างวด
+    </button>
+
   </div>
-</div>
 
-<div class="form-row">
-  <div class="label">จำนวนปีที่ผ่อน</div>
-  <div class="field"><input type="number" id="year"></div>
-</div>
+  <div class="result">
 
-<div class="form-row">
-  <div class="label">อัตราดอกเบี้ย (%)</div>
-  <div class="field">
-    <input type="number" id="interest">
-    <div class="note">ติดต่อเซลอาร์ต เพื่อรับดอกเบี้ยพิเศษ</div>
+    <div class="result-header">
+      📋 สรุปผลการคำนวณ
+    </div>
+
+    <div class="summary-grid">
+
+      <div class="summary-card full">
+        <div class="summary-title">รุ่นรถยนต์</div>
+        <div class="summary-value" id="resultCarModel">-</div>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-title">ราคารถ</div>
+        <div class="summary-value small" id="resultCarPrice">-</div>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-title">ส่วนลด</div>
+        <div class="summary-value small" id="resultDiscount">-</div>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-title">เงินดาวน์</div>
+        <div class="summary-value small" id="resultDownPayment">-</div>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-title">ยอดจัด</div>
+        <div class="summary-value small" id="financeAmount">-</div>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-title">จำนวนงวด</div>
+        <div class="summary-value small" id="resultMonths">-</div>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-title">ดอกเบี้ยรวม</div>
+        <div class="summary-value small" id="resultInterestTotal">-</div>
+      </div>
+
+    </div>
+
+    <div class="payment-highlight">
+
+      <div class="payment-label">
+        ค่างวดต่อเดือน
+      </div>
+
+      <div class="payment-value" id="monthlyPayment">
+        -
+      </div>
+
+    </div>
+
+    <div class="balloon-box hidden" id="balloonResult">
+
+      <div class="balloon-title">
+        🎈 Balloon งวดสุดท้าย
+      </div>
+
+      <div class="balloon-value" id="balloonAmount">
+        -
+      </div>
+
+    </div>
+
+    <div class="total-box">
+
+      <div class="total-title">
+        ยอดชำระรวมทั้งหมด
+      </div>
+
+      <div class="total-value" id="totalPayment">
+        -
+      </div>
+
+    </div>
+
   </div>
-</div>
 
-<div class="form-row">
-  <div class="label">รูปแบบการผ่อน</div>
-  <div class="field">
-    <select id="type" onchange="toggleBalloon()">
-      <option value="normal">ทั่วไป</option>
-      <option value="balloon">Balloon</option>
-    </select>
+  <div class="compare-box">
+
+    <div class="section-title">
+      เปรียบเทียบเงินดาวน์
+    </div>
+
+    <table class="compare-table">
+
+      <tr>
+        <th>ดาวน์</th>
+        <th>ยอดจัด</th>
+        <th>ค่างวด</th>
+      </tr>
+
+      <tr>
+        <td>10%</td>
+        <td id="compare10Finance">-</td>
+        <td id="compare10Monthly">-</td>
+      </tr>
+
+      <tr>
+        <td>20%</td>
+        <td id="compare20Finance">-</td>
+        <td id="compare20Monthly">-</td>
+      </tr>
+
+      <tr>
+        <td>30%</td>
+        <td id="compare30Finance">-</td>
+        <td id="compare30Monthly">-</td>
+      </tr>
+
+    </table>
+
   </div>
-</div>
 
-<div class="form-row" id="balloonBox" style="display:none;">
-  <div class="label">Balloon (%)</div>
-  <div class="field">
-    <select id="balloonPercent">
-      <option value="10">10%</option>
-      <option value="20">20%</option>
-      <option value="30">30%</option>
-      <option value="40">40%</option>
-    </select>
+  <div class="contact">
+
+    <h3>📞 ติดต่อเซลล์อาร์ต</h3>
+
+    <p>🏢 โตโยต้านนทบุรี สาขาแจ้งวัฒนะ</p>
+
+    <p>📱 โทร : 099-416-2110</p>
+
+    <p>💬 Line ID : 0876352939</p>
+
+    <a href="https://line.me/ti/p/~0876352939"
+       target="_blank"
+       class="line-btn">
+      ส่งผลคำนวณเข้า LINE
+    </a>
+
   </div>
-</div>
 
-<button class="btn-calc" onclick="calculate()">คำนวณใบเสนอราคา</button>
-
-<div class="result" id="result"></div>
-
-<button class="btn-line" onclick="sendLine()">ส่งเข้า LINE</button>
+  <div class="footer">
+    Toyota Finance Calculator • Mobile Premium UI
+  </div>
 
 </div>
 
 <script>
 
-/* ========= FORMAT NUMBER ========= */
-function formatNumber(num){
-  return new Intl.NumberFormat('th-TH').format(num);
-}
+const normalCard = document.getElementById('normalCard');
+const balloonCard = document.getElementById('balloonCard');
+const balloonSection = document.getElementById('balloonSection');
 
-/* ========= GLOBAL ========= */
-let lastMessage="";
+normalCard.addEventListener('click', () => {
 
-/* ========= TOGGLE BALLOON ========= */
-function toggleBalloon(){
-  document.getElementById("balloonBox").style.display =
-  document.getElementById("type").value==="balloon" ? "flex":"none";
-}
+  normalCard.classList.add('active');
+  balloonCard.classList.remove('active');
 
-/* ========= CALCULATE ========= */
-function calculate(){
+  balloonSection.classList.add('hidden');
 
-let price = +document.getElementById("price").value||0;
-let discount = +document.getElementById("discount").value||0;
-let downPercent = +document.getElementById("downPercent").value||0;
-let year = +document.getElementById("year").value||0;
-let interest = +document.getElementById("interest").value||0;
-let type = document.getElementById("type").value;
-let balloonPercent = +document.getElementById("balloonPercent").value||0;
+});
 
-let net = price - discount;
-let down = net * (downPercent/100);
-let finance = net - down;
-let months = year * 12;
-let r = interest/100/12;
+balloonCard.addEventListener('click', () => {
 
-let monthly=0, balloon=0;
+  balloonCard.classList.add('active');
+  normalCard.classList.remove('active');
 
-if(type==="normal"){
-  monthly = (finance*r)/(1-Math.pow(1+r,-months));
-}else{
-  balloon = finance*(balloonPercent/100);
-  let base = finance-balloon;
-  monthly = (base*r)/(1-Math.pow(1+r,-(months-1)));
-}
+  balloonSection.classList.remove('hidden');
 
-/* ========= MESSAGE ========= */
-lastMessage =
-`🚗 ใบเสนอราคารถยนต์
+});
 
-💰 ราคารถ: ${formatNumber(price)} บาท
-🎯 ส่วนลด: ${formatNumber(discount)} บาท
-📉 ราคาสุทธิ: ${formatNumber(net)} บาท
-💵 เงินดาวน์: ${formatNumber(down)} บาท
-📊 ยอดจัด: ${formatNumber(finance)} บาท
+function formatMoney(num){
 
-📆 ระยะเวลา: ${year} ปี (${months} เดือน)
-📈 ดอกเบี้ย: ${interest}%
-
-💳 ค่างวด: ${formatNumber(monthly)} บาท
-${type==="balloon" ? "🎈 Balloon: "+formatNumber(balloon)+" บาท\n":""}
-
-📞 เซลอาร์ต โตโยต้านนทบุรี
-☎ 099-416-2110
-LINE: arttoyotanont`;
-
-document.getElementById("result").innerText = lastMessage;
+  return Number(num).toLocaleString('th-TH',{
+    maximumFractionDigits:0
+  }) + ' บาท';
 
 }
 
-/* ========= SEND LINE ========= */
-function sendLine(){
+function calculateLoan(){
 
-if(!lastMessage){
-  alert("กรุณาคำนวณก่อน");
-  return;
+  const loanType =
+    document.querySelector('input[name="loanType"]:checked').value;
+
+  let carModel =
+    document.getElementById('carModel').value;
+
+  let carPrice =
+    parseFloat(document.getElementById('carPrice').value) || 0;
+
+  let discount =
+    parseFloat(document.getElementById('discount').value) || 0;
+
+  let downPayment =
+    parseFloat(document.getElementById('downPayment').value) || 0;
+
+  let downType =
+    document.getElementById('downType').value;
+
+  let years =
+    parseInt(document.getElementById('years').value);
+
+  let interest =
+    parseFloat(document.getElementById('interest').value) || 0;
+
+  let balloonPercent =
+    parseFloat(document.getElementById('balloonPercent').value) || 0;
+
+  let finalPrice = carPrice - discount;
+
+  let downAmount = 0;
+
+  if(downType === 'percent'){
+
+    downAmount = finalPrice * (downPayment / 100);
+
+  }else{
+
+    downAmount = downPayment;
+
+  }
+
+  let financeAmount = finalPrice - downAmount;
+
+  let months = years * 12;
+
+  let totalInterest =
+    financeAmount * (interest / 100) * years;
+
+  let totalPayment =
+    financeAmount + totalInterest;
+
+  let monthly = 0;
+
+  let balloonAmount = 0;
+
+  if(loanType === 'normal'){
+
+    monthly = totalPayment / months;
+
+    document.getElementById('balloonResult')
+      .classList.add('hidden');
+
+  }else{
+
+    balloonAmount =
+      financeAmount * (balloonPercent / 100);
+
+    let remain =
+      totalPayment - balloonAmount;
+
+    monthly =
+      remain / (months - 1);
+
+    document.getElementById('balloonResult')
+      .classList.remove('hidden');
+
+    document.getElementById('balloonAmount').innerText =
+      formatMoney(balloonAmount);
+
+  }
+
+  document.getElementById('resultCarModel').innerText =
+    carModel || '-';
+
+  document.getElementById('resultCarPrice').innerText =
+    formatMoney(carPrice);
+
+  document.getElementById('resultDiscount').innerText =
+    formatMoney(discount);
+
+  document.getElementById('resultDownPayment').innerText =
+    formatMoney(downAmount);
+
+  document.getElementById('financeAmount').innerText =
+    formatMoney(financeAmount);
+
+  document.getElementById('resultMonths').innerText =
+    months + ' งวด';
+
+  document.getElementById('resultInterestTotal').innerText =
+    formatMoney(totalInterest);
+
+  document.getElementById('monthlyPayment').innerText =
+    formatMoney(monthly);
+
+  document.getElementById('totalPayment').innerText =
+    formatMoney(totalPayment);
+
+  comparePlans(finalPrice, years, interest);
+
 }
 
-let url = "https://social-plugins.line.me/lineit/share?text="
-+ encodeURIComponent(lastMessage);
+function comparePlans(price, years, interest){
 
-window.open(url,"_blank");
+  let months = years * 12;
+
+  function calc(dp){
+
+    let finance = price - (price * dp);
+
+    let total =
+      finance + (finance * (interest/100) * years);
+
+    let monthly = total / months;
+
+    return {
+      finance,
+      monthly
+    };
+
+  }
+
+  let p10 = calc(0.10);
+  let p20 = calc(0.20);
+  let p30 = calc(0.30);
+
+  document.getElementById('compare10Finance').innerText =
+    formatMoney(p10.finance);
+
+  document.getElementById('compare10Monthly').innerText =
+    formatMoney(p10.monthly);
+
+  document.getElementById('compare20Finance').innerText =
+    formatMoney(p20.finance);
+
+  document.getElementById('compare20Monthly').innerText =
+    formatMoney(p20.monthly);
+
+  document.getElementById('compare30Finance').innerText =
+    formatMoney(p30.finance);
+
+  document.getElementById('compare30Monthly').innerText =
+    formatMoney(p30.monthly);
 
 }
 
