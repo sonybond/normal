@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>คำนวณค่างวดรถยนต์</title>
+
+  <style>
+
+    body{
+      font-family: Arial, sans-serif;
+      background:#f4f6f9;
+      margin:0;
+      padding:40px;
+    }
+
+    .container{
+      max-width:550px;
+      margin:auto;
+      background:white;
+      padding:30px;
+      border-radius:15px;
+      box-shadow:0 0 15px rgba(0,0,0,0.1);
+    }
+
+    h1{
+      text-align:center;
+      color:#d60000;
+      margin-bottom:25px;
+    }
+
+    .form-group{
+      margin-bottom:18px;
+    }
+
+    label{
+      display:block;
+      margin-bottom:8px;
+      font-weight:bold;
+    }
+
+    input,
+    select{
+      width:100%;
+      padding:12px;
+      border:1px solid #ccc;
+      border-radius:8px;
+      font-size:16px;
+      box-sizing:border-box;
+    }
+
+    button{
+      width:100%;
+      padding:14px;
+      background:#d60000;
+      color:white;
+      border:none;
+      border-radius:10px;
+      font-size:18px;
+      cursor:pointer;
+      margin-top:10px;
+    }
+
+    button:hover{
+      background:#b00000;
+    }
+
+    .result{
+      margin-top:25px;
+      background:#f8f8f8;
+      padding:20px;
+      border-radius:10px;
+    }
+
+    .result p{
+      margin:10px 0;
+      font-size:18px;
+    }
+
+    .highlight{
+      color:#d60000;
+      font-weight:bold;
+      font-size:24px;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>คำนวณค่างวดรถยนต์ แบบอัตราปกติ By เซลอาร์ต โตโยต้านนทบุรี สาขาแจ้งวัฒนะ</h1>
+
+    <div class="form-group">
+      <label>1. ราคารถยนต์ (บาท)</label>
+      <input type="number" id="carPrice" placeholder="เช่น 945000">
+    </div>
+
+    <div class="form-group">
+      <label>2. ส่วนลดพิเศษ (บาท)</label>
+      <input type="number" id="discount" placeholder="เช่น 35000">
+    </div>
+
+    <div class="form-group">
+
+      <label>3. เงินดาวน์</label>
+
+      <select id="downType" onchange="toggleDownPayment()">
+        <option value="amount">กรอกเป็นจำนวนเงิน</option>
+        <option value="percent">เลือกเป็นเปอร์เซ็นต์</option>
+      </select>
+
+      <input
+        type="number"
+        id="downPayment"
+        placeholder="เช่น 150000"
+        style="margin-top:10px;"
+      >
+
+      <select
+        id="downPercent"
+        style="display:none; margin-top:10px;"
+      >
+        <option value="5">5%</option>
+        <option value="10">10%</option>
+        <option value="15">15%</option>
+        <option value="20">20%</option>
+      </select>
+
+    </div>
+
+    <div class="form-group">
+      <label>4. จำนวนปีที่ผ่อน</label>
+      <input type="number" id="years" placeholder="เช่น 7">
+    </div>
+
+    <div class="form-group">
+      <label>5. อัตราดอกเบี้ย (%)</label>
+      <input type="number" step="0.01" id="interest" placeholder="เช่น 4.85">
+    </div>
+
+    <button onclick="calculateLoan()">
+      คำนวณค่างวด
+    </button>
+
+    <div class="result" id="result" style="display:none;">
+
+      <p>
+        ราคารถสุทธิ:
+        <strong id="netPrice"></strong> บาท
+      </p>
+
+      <p>
+        เงินดาวน์:
+        <strong id="showDownPayment"></strong> บาท
+      </p>
+
+      <p>
+        ยอดจัดไฟแนนซ์:
+        <strong id="finance"></strong> บาท
+      </p>
+
+      <p>
+        ดอกเบี้ยรวม:
+        <strong id="totalInterest"></strong> บาท
+      </p>
+
+      <p>
+        ยอดชำระทั้งหมด:
+        <strong id="totalPayment"></strong> บาท
+      </p>
+
+      <p class="highlight">
+        ค่างวดต่อเดือน:
+        <span id="monthly"></span> บาท
+      </p>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    function formatNumber(num){
+      return new Intl.NumberFormat('th-TH',{
+        maximumFractionDigits:0
+      }).format(num);
+    }
+
+    function toggleDownPayment(){
+
+      const type = document.getElementById('downType').value;
+
+      if(type === 'percent'){
+
+        document.getElementById('downPayment').style.display = 'none';
+        document.getElementById('downPercent').style.display = 'block';
+
+      }else{
+
+        document.getElementById('downPayment').style.display = 'block';
+        document.getElementById('downPercent').style.display = 'none';
+
+      }
+    }
+
+    function calculateLoan(){
+
+      const carPrice =
+        parseFloat(document.getElementById('carPrice').value) || 0;
+
+      const discount =
+        parseFloat(document.getElementById('discount').value) || 0;
+
+      const years =
+        parseFloat(document.getElementById('years').value) || 0;
+
+      const interest =
+        parseFloat(document.getElementById('interest').value) || 0;
+
+      const downType =
+        document.getElementById('downType').value;
+
+      // ราคารถหลังหักส่วนลด
+      const netPrice = carPrice - discount;
+
+      let downPayment = 0;
+
+      // ถ้าเลือกดาวน์แบบ %
+      if(downType === 'percent'){
+
+        const percent =
+          parseFloat(document.getElementById('downPercent').value);
+
+        downPayment =
+          netPrice * (percent / 100);
+
+      }else{
+
+        downPayment =
+          parseFloat(document.getElementById('downPayment').value) || 0;
+
+      }
+
+      // ยอดจัด
+      const finance = netPrice - downPayment;
+
+      // ดอกเบี้ยรวม
+      const totalInterest =
+        finance * (interest / 100) * years;
+
+      // ยอดรวม
+      const totalPayment =
+        finance + totalInterest;
+
+      // จำนวนเดือน
+      const months =
+        years * 12;
+
+      // ค่างวดต่อเดือน
+      const monthly =
+        totalPayment / months;
+
+      // แสดงผล
+      document.getElementById('result').style.display = 'block';
+
+      document.getElementById('netPrice').innerText =
+        formatNumber(netPrice);
+
+      document.getElementById('showDownPayment').innerText =
+        formatNumber(downPayment);
+
+      document.getElementById('finance').innerText =
+        formatNumber(finance);
+
+      document.getElementById('totalInterest').innerText =
+        formatNumber(totalInterest);
+
+      document.getElementById('totalPayment').innerText =
+        formatNumber(totalPayment);
+
+      document.getElementById('monthly').innerText =
+        formatNumber(monthly);
+
+    }
+
+  </script>
+
+</body>
+</html>
