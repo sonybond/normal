@@ -652,7 +652,7 @@ select:focus{
   </div>
 
   <div class="footer">
-    Toyota Finance Calculator • Mobile Premium UI
+    Finance Calculator by Art
   </div>
 
 </div>
@@ -756,10 +756,10 @@ function calculateLoan(){
   }else{
 
     balloonAmount =
-      financeAmount * (balloonPercent / 100);
+      carPrice * (balloonPercent / 100);
 
     let remain =
-      totalPayment - balloonAmount;
+      (financeAmount + totalInterest) - balloonAmount;
 
     monthly =
       remain / (months - 1);
